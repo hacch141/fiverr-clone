@@ -24,7 +24,20 @@ const connect = async () => {
     }
 }
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
+const allowedOrigins = ['http://localhost:3000', 'https://fiverr-www.vercel.app/'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests from allowed origins
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json())
 app.use(cookieParser())
 
